@@ -38,10 +38,6 @@ $GLOBALS['_TOKEN_CSRF'] = false;
 // Rotas api
 require_once(path("/routes/api.php"));
 
-
-/*************************** */
-$GLOBALS['_TOKEN_CSRF'] = false;
-
 //Rotas Webhook
 $router->post('webhook/zenvia', ['controller' => 'Webhook', 'action' => 'zenvia']);
 $router->post('webhook_caf', ['controller' => 'Webhook', 'action' => 'caf']);
