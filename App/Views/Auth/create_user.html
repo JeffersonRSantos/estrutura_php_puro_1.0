@@ -1,0 +1,58 @@
+{{ include('Components/head.html') }} {{ include('Components/header_menu.html') }}
+
+<div class="container-fluid bg-full divisor-content-header">
+    <div class="container bg-white p-5">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-8 col-12">
+                <h1 class="display-4">
+                    Criar novo usuário
+                </h1>
+            </div>
+            <div class="col-lg-4 col-12 text-right">
+                <a onclick="history.back()" class="btn btn-secondary color-white btn-sm">
+                    << Voltar</a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 pt-3">
+                <fieldset>
+                    <form action="" id="formCreateUser">
+                        {{ global.call('CSRFForm') | raw }}
+                        <div class="row">
+                            <div class="col-lg-6 col-12 form-group">
+                                <input type="text" class="form-control" name="name" placeholder="Nome completo" required>
+                            </div>
+                            <div class="col-lg-6 col-12 form-group">
+                                <input type="email" class="form-control" name="email" placeholder="E-mail" required>
+                            </div>
+                            <div class="col-lg-6 col-12 form-group">
+                                <input type="text" class="form-control cpf" name="cpf" placeholder="CPF" required>
+                            </div>
+                            <div class="col-lg-6 col-12 form-group">
+                                <select class="custom-select" name="nivel" required>
+                                    <option value="2" selected disabled>Perfil</option>
+                                    <option value="1">{{ global.call('lang', ['type_user.1']) }}</option>
+                                    <option value="2">{{ global.call('lang', ['type_user.2']) }}</option>
+                                  </select>
+                            </div>
+                            <div class="col-12">
+                                <div class="alert alert-warning">
+                                    Uma senha temporária será enviada para o e-mail do usuário.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="msg-resp"></div>
+                                <hr>
+                                <button type="button" onclick="createUser()" class="btn btn-success w-100">Criar usuário</button>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{ include('Components/footer.html') }}

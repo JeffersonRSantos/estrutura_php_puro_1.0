@@ -1,0 +1,18 @@
+{
+    "require": {
+        "php" : ">=7.4",
+        "ext-mbstring": "*",
+        "twig/twig": "~3.0",
+        "dompdf/dompdf": "1.0.2",
+        "predis/predis": "^2.0",
+        "phpmailer/phpmailer": "^6.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "App\\": "App/",
+            "Helpers\\": "Core/Helpers/",
+            "Services\\": "Core/Services/"
+        }
+    }
+}

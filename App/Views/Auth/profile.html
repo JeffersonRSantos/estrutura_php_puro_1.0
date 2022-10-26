@@ -1,0 +1,74 @@
+{{ include('Components/head.html') }} {{ include('Components/header_menu.html') }}
+
+<div class="container-fluid bg-full divisor-content-header">
+    <div class="container bg-white p-5">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-8 col-12">
+                <h1 class="display-4">
+                    {% if global.call('typeUser') == 1 %} Gerencias Perfis {% else %} Meu Perfil {% endif %}
+                </h1>
+            </div>
+            {% if global.call('typeUser') == 1 %}
+            <div class="col-lg-4 col-12 text-right">
+                <a href="{{ global.call('url') }}/profile/create" class="btn btn-success color-white btn-sm">Criar novo usuário</a>
+            </div>
+            {% endif %}
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 pt-3">
+                {{ global.call('CSRFForm') | raw }}
+                <table class="table table-bordered table-style table-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th class="text-center" scope="col">Nome</th>
+                            <th class="text-center" scope="col">Username</th>
+                            <th class="text-center" scope="col">Email</th>
+                            <th class="text-center" scope="col">CPF</th>
+                            <th class="text-center" scope="col">Perfil</th>
+                            <th class="text-center" scope="col">Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <th scope="row">
+                                {{ user.id }}
+                            </th>
+                            <td class="text-center">
+                                {% if user.name %} {{ user.name }} {%else%} - {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if user.username %} {{ user.username }} {%else%} - {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if user.email %} {{ user.email }} {%else%} - {% endif %}
+                                <br> {% if user.inactive == 1 %}
+                                <small class="alert alert-warning p-1">Usuário desativado</small> {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if user.cpf %} {{ user.cpf }} {%else%} - {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <strong>
+                                    {{ global.call('lang', ['type_user.' ~ user.nivel]) }}
+                                </strong>
+                            </td>
+
+                            <td class="text-center">
+                                <a href="{{ global.call('url') }}/profile/{{ user.id }}/edit" class="btn btn-info btn-sm color-white">Editar</a> {% if global.call('typeUser') == 1 %} {% if user.inactive == 0 %}
+                                <a onclick="userInactiveAndActive('{{ user.id }}','1')" class="btn btn-warning btn-sm color-white">Inativar</a> {% else %}
+                                <a onclick="userInactiveAndActive('{{ user.id }}','0')" class="btn btn-success btn-sm color-white">Reativar</a> {% endif %} {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{ include('Components/footer.html') }}

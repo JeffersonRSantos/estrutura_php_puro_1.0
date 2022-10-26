@@ -1,0 +1,122 @@
+<?php
+
+require __DIR__ . "/vendor/autoload.php";
+require __DIR__ . "/Core/Core.php";
+
+use Core\Database;
+
+set_time_limit(0);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$command = $argv[1] ?? null;
+$arg = $argv;
+unset($arg[0]);
+$arg = array_values($arg);
+
+switch($command){
+    case "ping":
+        echo "pong";
+        break;
+
+    case "queue:worker":
+        $invoke = "\App\Workers\\" . $arg[1];
+        call_user_func([new $invoke, "worker"]);
+        break;
+
+    case "queue:worker:redis":
+        $invoke = "\Core\Helpers\Queue";
+        call_user_func([new $invoke($arg[1]), "worker"], $arg[1], $arg[2] ?? "");
+        break;
+
+    case "make:migration":
+        if(!$arg[1]) {
+            echo "Please provide a name for the migration";
+            break;
+        }
+        $arg[1] = str_replace(" ", "_", $arg[1]);
+        $datetime = date("YmdHis");
+        $name = $datetime . "-" . $arg[1] . ".php";
+        file_put_contents("App/Migrations/" . $name, "<?" . "php\n\n" . "// Migration: {$arg[1]}\nclass m" . $datetime . " extends \Core\Migrations {\n\tfunction up() {\n" . "\t\t\n" . "\t}\n\t" . "function down() {\n" . "\t\t\n" . "\t}\n}");
+        echo "Migration `" . $name . "` successfully created";
+        break;
+
+    case "db:migrate":
+        try {
+            $migrations = Table("")::raw("SELECT * FROM migrations");
+        } catch(\Exception $e) {
+            $migrations = false;
+        }
+        if(!$migrations) Table("")::raw("CREATE TABLE migrations (id INT NOT NULL AUTO_INCREMENT, migration varchar(355) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+        $migrationsList = array();
+        if($migrations) {
+            while($row = $migrations->fetch()) {
+                array_push($migrationsList, $row["migration"]);
+            }
+        }
+        $i = true;
+        foreach(glob(path() . '/App/Migrations/*') as $file) {
+            $migration_name = explode("/",$file);
+            $migration_name = end($migration_name);
+            if(in_array($migration_name,$migrationsList)) continue;
+            $i = false;
+            require_once($file);
+            $class = explode("/", $file);
+            $class = end($class);
+            $class = "m" . explode("-",$class)[0];
+
+            $init = new $class;
+            try {
+                $init->up();
+            } catch(\Exception $e) {
+                echo "Aborting. Error on migration {$migration_name}: " . \Core\PdoConn::get()->errorInfo()[2];
+                break;
+                return;
+                die();
+            }
+            Table("")::raw("INSERT INTO migrations (migration) VALUES (?)", [$migration_name]);
+            echo "Migrate `{$migration_name}` successfully\n";
+        }
+        if($i) {
+            echo "Nothing to migrate, up to date\n";
+        }
+        break;
+
+    case "db:migrate:undo":
+        $lastMigration = Table("")::raw("SELECT * FROM migrations ORDER BY id DESC")->fetch();
+        if(!$lastMigration) {
+            echo "Nothing to reverse.\n";
+            break;
+        }
+        $file = path() . "/App/Migrations/" . $lastMigration["migration"];
+        $migration_name = explode("/",$file);
+        $migration_name = end($migration_name);
+        require_once($file);
+        $class = explode("/", $file);
+        $class = end($class);
+        $class = "m" . explode("-",$class)[0];
+
+        $init = new $class;
+        try {
+            $init->down();
+        } catch(\Exception $e) {
+            echo "Aborting. Error on migration {$migration_name}: " . \Core\PdoConn::get()->errorInfo()[2];
+            break;
+        }
+
+        Table("")::raw("DELETE FROM migrations WHERE migration = ?",[$migration_name]);
+        echo "Reverse migration `{$migration_name}` successfully\n";
+        break;
+
+    case "class:run":
+        call_user_func($arg[1]);
+        break;
+
+    default:
+        echo "Command not found";
+        break;
+
+    echo "\n";
+    
+}

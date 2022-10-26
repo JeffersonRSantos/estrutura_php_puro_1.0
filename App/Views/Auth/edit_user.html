@@ -1,0 +1,77 @@
+{{ include('Components/head.html') }}
+
+{{ include('Components/header_menu.html') }}
+
+<div class="container-fluid bg-full divisor-content-header">
+    <div class="container bg-white p-5">
+        {% if user is empty %}
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-color-default display-4">Não existe o usuário com esse ID.</h1>
+            </div>
+        </div>
+        {% else %}
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-8 col-12">
+                <h1 class="display-4">
+                    {% if global.call('typeUser') == 1 %}
+                    Editar Usuário
+                    {% else %}
+                    Editar Perfil
+                    {% endif %}
+                </h1>
+            </div>
+            <div class="col-lg-4 col-12 text-right">
+                <a onclick="history.back()" class="btn btn-secondary color-white btn-sm">
+                    << Voltar</a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 pt-3">
+                <fieldset>
+                    <form action="" id="formEditUser">
+                        {{ global.call('CSRFForm') | raw }}
+                        <input type="hidden" name="id" value="{{ user.id }}">
+                        <div class="row">
+                            <div class="col-lg-6 col-12 form-group">
+                                <input type="text" class="form-control" name="name" placeholder="Nome completo" value="{{ user.name }}" required>
+                            </div>
+                            <div class="col-lg-6 col-12 form-group">
+                                <input type="email" class="form-control" name="email" placeholder="E-mail" value="{{ user.email }}" required>
+                            </div>
+                            <div class="col-lg-6 col-12 form-group">
+                                <input type="text" class="form-control cpf" name="cpf" placeholder="CPF" value="{{ user.cpf }}" required>
+                            </div>
+                            <div class="col-lg-6 col-12 form-group">
+                                <select class="custom-select" name="nivel" required>
+                                    <option value="{{ user.nivel }}" selected disabled>{{ global.call('lang', ['type_user.' ~ user.nivel]) }}</option>
+                                    <option value="1">{{ global.call('lang', ['type_user.1']) }}</option>
+                                    <option value="2">{{ global.call('lang', ['type_user.2']) }}</option>
+                                </select>
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="password" class="form-control" name="password"
+                                    placeholder="Atualizar Senha">
+                            </div>
+                            <div class="col-6 form-group">
+                                <input type="password" class="form-control" name="confirmed_password"
+                                    placeholder="Confirmar Senha">
+                            </div>
+                            <div class="col-12">
+                                <div class="msg-resp"></div>
+                                <hr>
+                                <button type="button" onclick="editUser()"
+                                    class="btn btn-success w-100">Atualizar</button>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{{ include('Components/footer.html') }}

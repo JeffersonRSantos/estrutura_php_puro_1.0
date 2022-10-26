@@ -1,0 +1,27 @@
+<?php
+
+namespace App;
+
+class Config
+{
+    // APP
+    const APP_NAME = 'SandBox';
+    const BASE_URL = 'http://localhost/estrutura_php_puro_1.0/public';
+    const APP_KEY = 'qy1DOm4UBTkNW9o0DkF75e8O^kZFsr01fEFJ3sQSFcXn$d*XMD';
+    const SESSION_ID = 'PHP_SESSID';
+    const APP_AMB = 'dev';
+
+    //DATABASE
+    const DB_HOST = 'localhost';
+    const DB_NAME = 'teste';
+    const DB_USER = 'root';
+    const DB_PASSWORD = '';
+
+    const SHOW_ERRORS = true;
+
+    // REDIS
+    const REDIS_HOST = "18.223.185.31";
+    const REDIS_PORT = 6379;
+    const REDIS_PASS = "foobared321321";
+
+}

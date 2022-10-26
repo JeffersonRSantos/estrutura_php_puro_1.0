@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html/
+    overwrite: true
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: www-data
+    
+hooks:
+  ApplicationStart:
+    - location: scripts/restartserver.sh
+    - location: scripts/db_migrate.sh
+      timeout: 300
+

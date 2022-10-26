@@ -1,0 +1,236 @@
+{{ include('Components/head.html') }} {{ include('Components/header_menu.html') }}
+
+<div style="height: 100vh !important;" class="container-fluid bg-full divisor-content-header">
+    <div class="container bg-white">
+        <div class="row p-0 m-0">
+            <nav class="navbar navbar-expand-lg p-0 m-0 w-100">
+                <div class="collapse navbar-collapse style-menu-open-dash" id="subnav-dash">
+                    <ul class="navbar-nav mr-auto ">
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#formalizacao" role="button" aria-expanded="true" aria-controls="in100">Formalização</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="collapse" href="#in100" role="button" aria-expanded="true" aria-controls="formalizacao">Termo de Autorização</a>
+                        </li>
+                    </ul>
+                    <div class="pr-3">
+                        <a class="btn btn-dark btn-sm color-white" href="?filter=all"> Todas as propostas</a>
+                        <a class="btn btn-success btn-sm " href="?filter=today"> Propostas de hoje</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="row p-5">
+            <div class="col-lg-12 col-12 text-center collapse mb-5" id="in100">
+                <div class="box-card text-center">
+
+                    <h3 class="text-color-default">Termo de Autorização</h3>
+                    <hr />
+                    <br /><br />
+
+                    <div class="row">
+
+                        <div class="col-lg-6 pb-4">
+                            <a title="Em andamento" class="text-warning">
+                                <h4 class="display-4">{{ andamento_in100 }}</h4>
+                                <h5>Em andamento
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-6 pb-4">
+                            <a title="Recusado" class="text-color-default">
+                                <h4 class="display-4">{{ reprovados_in100 }}</h4>
+                                <h5>Recusado
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4">
+                            <a title="Expirados" class="text-secondary">
+                                <h4 class="display-4">{{ expirados_in100 }}</h4>
+                                <h5>Expirados
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4">
+                            <a title="Aprovados" class="text-success">
+                                <h4 class="display-4">{{ aprovados_in100 }}</h4>
+                                <h5>Aprovados
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+
+                        <div class="col-lg-4 ">
+                            <a title="Total" class="text-info">
+                                <h4 class="display-4">{{ total_in100 }}</h4>
+                                <h5>Total
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-12 col-12 text-center collapse show " id="formalizacao">
+                <div class="box-card text-center">
+
+                    <h3 class="text-color-default">Formalização</h3>
+                    <hr />
+                    <br /><br />
+
+                    <div class="row">
+
+                        <!-- <div class="col-lg-4 col-6">
+                            <a title="Na fila" class="text-dark">
+                                <h4 class="display-4">0</h4>
+                                <h5>Na fila
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div> -->
+                        <div class="col-lg-4 col-6">
+                            <a title="Pré-processo" class="text-dark">
+                                <h4 class="display-4">
+                                    {% if pre_processo %} {{ pre_processo }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Pré-processamento
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Em andamento" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=1" class="text-dark">
+                            {% else %}
+                            <a title="Em andamento" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=1&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}" class="text-dark">
+                            {% endif %}
+
+                                <h4 class="display-4">
+                                    {% if prosseguir_formalizando %} {{ prosseguir_formalizando[0] }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Prontas para prosseguir
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Em andamento" class="text-warning" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=2">
+                            {% else %}
+                            <a title="Em andamento" class="text-warning" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=2&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+                                <h4 class="display-4">
+                                    {% if andamento_formalizando %} {{ andamento_formalizando[0] }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Em andamento
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Em análise" class="text-warning" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=3">
+                            {% else %} 
+                            <a title="Em análise" class="text-warning" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=3&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+
+                                <h4 class="display-4">
+                                    {% if analise_formalizando %} {{ analise_formalizando[0] - validacao_manual_formalizacao }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Em análise
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Canceladas" class="text-danger" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=5">
+                            {% else %}
+                            <a title="Canceladas" class="text-danger" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=5&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+
+                                <h4 class="display-4">
+                                    {% if cancelada_formalizando %} {{ cancelada_formalizando[0] }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Canceladas
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Encerradas" class="text-color-default" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=6">
+                            {% else %}
+                            <a title="Encerradas" class="text-color-default" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=6&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+
+                                <h4 class="display-4">
+                                    {% if encerrada_formalizando %} {{ encerrada_formalizando[0] }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Encerradas
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Validação Manual" class="text-danger" href="{{ global.call('url') }}/propostas/formalizacao?filter-validation-manual=1">
+                            {% else %}
+                            <a title="Validação Manual" class="text-danger" href="{{ global.call('url') }}/propostas/formalizacao?filter-validation-manual=1&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+
+                                <h4 class="display-4">
+                                    {% if validacao_manual_formalizacao %} {{ validacao_manual_formalizacao }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Validação manual
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Efetuadas" class="text-success" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=4">
+                            {% else %}
+                            <a title="Efetuadas" class="text-success" href="{{ global.call('url') }}/propostas/formalizacao?filter-steps-status=4&filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+
+                                <h4 class="display-4">
+                                    {% if efetuada_formalizando %} {{ efetuada_formalizando[0] }} {% else %} 0 {% endif %}
+                                </h4>
+                                <h5>Efetuadas
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+                        <div class="col-lg-4 col-6">
+                            {% if global.call('RequestInput',['filter']) == 'all' %}
+                            <a title="Total" class="text-info" href="{{ global.call('url') }}/propostas/formalizacao?filter-all=true">
+                                {% else %}
+                                <a title="Total" class="text-info" href="{{ global.call('url') }}/propostas/formalizacao?filter-tipo=Date&filter-date-de={{ 'now'|date('Y-m-d') }}">
+                            {% endif %}
+                                <h4 class="display-4">{{ total_formalizacao }}</h4>
+                                <h5>Total
+                                    <h5>
+                            </a>
+                            <hr />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+{{ include('Components/footer.html') }}

@@ -1,0 +1,7 @@
+vendor
+logs/*
+composer.lock
+App/Config.php
+error_log
+public/storage/*
+public/exports/*
