@@ -272,25 +272,6 @@ O `Builder` é fundamental para receber a request e construir todo o caminho par
 
 O `Request` é fundamental para a injeção de dependência e reponsável pelo `Getters` e `Setters` de toda a estrutura do request vindo de fora.
 
-## Fluxos de whatsApp
-
-Todos os fluxos de Whatsapp ficaram no caminho [App/Traits]. Cada fluxo é um `Trait`, isso possibilita a implementação dele no `Controller` referente. Todos fluxo por padrão tem a estrutura de `Switch case`, dentro de cada Switch, se existe mais de 2 condições, adicionar como Switch também. Ex:
-
-```php
-switch ($variable) {
-    case 1:
-        switch ($variable) {
-            case 'valido':
-                //
-            case 'inválido':
-                //
-            case 'outra situação':
-                //
-        }
-    default:
-        //return default
-}
-```
 ## Functions Globals
 
 Temos Funções globais que nos ajuda a chamar uma funcionalida de uma forma rápida. ex:
@@ -311,6 +292,3 @@ Models('Lead')::get(); // lista todos
 
 Obs: Todas as funções globais estão nesse caminho: [Core/Core.php];
 
-## Constants Globals
-
-Em qualquer lugar do código é possível chamar alguma mensagem constante, ex: `MSG_1` = 'Olá, seja bem vindo ao INSS Formalização'.
